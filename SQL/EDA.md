@@ -1,8 +1,8 @@
 
 ```markdown
-# SQL Exploratory Data Analysis (EDA) Project | Full Hands-On Portfolio Project
+### SQL Exploratory Data Analysis (EDA) Project | Full Hands-On Portfolio Project
 
-## Overview of SQL Projects
+### Overview of SQL Projects
 > "In any data analytics project using SQL, there are three types of projects to consider: data warehousing, exploratory data analysis, and advanced analytics."
 
 - **Data Warehousing**: Focuses on structuring/organizing data for analysis
