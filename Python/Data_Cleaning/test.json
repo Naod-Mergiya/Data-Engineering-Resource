@@ -1,0 +1,168 @@
+{
+    "cells": [
+     {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+       "# Data Cleaning in Pandas (SQL to Advanced)\n",
+       "**For SQL Experts Transitioning to Pandas**"
+      ]
+     },
+     {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+       "## Basic Operations (SQL → Pandas)"
+      ]
+     },
+     {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "outputs": [],
+      "source": [
+       "import pandas as pd\n",
+       "import numpy as np\n",
+       "\n",
+       "# Create a sample DataFrame\n",
+       "data = {\n",
+       "    'id': [1, 2, 3, 4],\n",
+       "    'name': ['Alice', 'Bob', None, 'David'],\n",
+       "    'value': [100, None, 150, 200],\n",
+       "    'category': ['A', 'B', 'A', 'B']\n",
+       "}\n",
+       "df = pd.DataFrame(data)"
+      ]
+     },
+     {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+       "### 1. Filtering Rows (SQL WHERE)"
+      ]
+     },
+     {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "outputs": [],
+      "source": [
+       "# SQL: SELECT * FROM table WHERE value > 100 AND category = 'A'\n",
+       "filtered_df = df[(df['value'] > 100) & (df['category'] == 'A')]"
+      ]
+     },
+     {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+       "### 2. Handling NULLs (SQL COALESCE)"
+      ]
+     },
+     {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "outputs": [],
+      "source": [
+       "# SQL: SELECT COALESCE(value, 0) FROM table\n",
+       "df['value'] = df['value'].fillna(0)\n",
+       "df['name'] = df['name'].fillna('Unknown')"
+      ]
+     },
+     {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+       "## Advanced Operations"
+      ]
+     },
+     {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+       "### 3. Group Imputation (SQL Window Functions)"
+      ]
+     },
+     {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "outputs": [],
+      "source": [
+       "# Replace NULLs with group mean\n",
+       "df['value'] = df.groupby('category')['value'].transform(lambda x: x.fillna(x.mean()))"
+      ]
+     },
+     {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+       "### 4. Advanced String Manipulation"
+      ]
+     },
+     {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "outputs": [],
+      "source": [
+       "# Extract numbers from strings\n",
+       "df['id'] = df['name'].str.extract(r'(\\d+)').astype(float)"
+      ]
+     },
+     {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+       "### 5. Optimized Memory Usage"
+      ]
+     },
+     {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "outputs": [],
+      "source": [
+       "# Reduce memory usage\n",
+       "df['category'] = df['category'].astype('category')\n",
+       "df['id'] = pd.to_numeric(df['id'], downcast='integer')"
+      ]
+     },
+     {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+       "## Case Study: Full Pipeline"
+      ]
+     },
+     {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {},
+      "outputs": [],
+      "source": [
+       "# Clean a messy dataset\n",
+       "clean_df = (\n",
+       "    df\n",
+       "    .dropna(subset=['name'])\n",
+       "    .assign(value=lambda x: x['value'] * 2)\n",
+       "    .query(\"category == 'A'\")\n",
+       ")\n",
+       "clean_df"
+      ]
+     }
+    ],
+    "metadata": {
+     "kernelspec": {
+      "display_name": "Python 3",
+      "language": "python",
+      "name": "python3"
+     },
+     "language_info": {
+      "name": "python",
+      "version": "3.9.6"
+     }
+    },
+    "nbformat": 4,
+    "nbformat_minor": 2
+   }
